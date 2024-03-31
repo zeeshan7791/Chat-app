@@ -1,9 +1,10 @@
 import User from "../models/userModel.js"
 import bcryptjs from "bcryptjs";
+import generateTokenandSetCookie from "../utils/generateToken.js";
 export const signUp = async (req, res) => {
 	try {
 		const { fullName, username, password, confirmPassword, gender } = req.body;
-console.log(req.body)
+
 
 		if (password !== confirmPassword) {
 			return res.status(400).json({ error: "Passwords don't match" });
@@ -32,43 +33,62 @@ console.log(req.body)
 			profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
 		});
 
-		// if (newUser) {
-		// 	// Generate JWT token here
-		// 	generateTokenAndSetCookie(newUser._id, res);
+		if (newUser) {
+			// Generate JWT token here
+			generateTokenandSetCookie(newUser._id, res);
 			await newUser.save();
 
-			res.status(201).json({
+			return res.status(201).json({
+				sucess:true,
+				message:"user register successfully",
 				_id: newUser._id,
 				fullName: newUser.fullName,
 				username: newUser.username,
 				profilePic: newUser.profilePic,
 			});
-		// } else {
-		// 	res.status(400).json({ error: "Invalid user data" });
-		// }
+		} else {
+			return res.status(400).json({ error: "Invalid user data" });
+		}
 	} catch (error) {
-		console.log("Error in signup controller", error.message);
-		res.status(500).json({ error: "Internal Server Error" });
+		
+		return res.status(500).json({ error: "Internal Server Error" });
 	}
 };
 
 export const login=async(req,res,next)=>{
     try{
-        res.send("login")
+const {username,password}=req.body
+const user=await User.findOne({username})
 
-console.log(req.body)
+const passwordMatch=await bcryptjs.compare(password,user.password||"")
+if(!passwordMatch ||!user)
+{
+
+	return res.status(400).json({
+		success:false,
+		message:'invalid credentials'
+	})
+}
+
+		generateTokenandSetCookie(user._id, res);
+
+		return res.status(200).json({
+			_id: user._id,
+			fullName: user.fullName,
+			username: user.username,
+			profilePic: user.profilePic,
+		});
     }
     catch(error){
-        next(error)
+		return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 export const logout=async(req,res,next)=>{
-    try{
-        res.send("logout")
-
-console.log(req.body)
-    }
-    catch(error){
-        next(error)
-    }
+	try {
+		res.cookie("chattoken", "", { maxAge: 0 });
+		return res.status(200).json({ message: "Logged out successfully" });
+	} catch (error) {
+		
+		return res.status(500).json({ error: "Internal Server Error" });
+	}
 }
