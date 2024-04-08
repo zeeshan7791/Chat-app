@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
 	return (
+		<>
 		<div className='flex'>
 			<div className='form-control'>
 				<label className={`label gap-2 cursor-pointer ${selectedGender === "male" ? "selected" : ""} `}>
@@ -25,6 +26,7 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
 				</label>
 			</div>
 		</div>
+		</>
 	);
 };
 GenderCheckbox.propTypes = {
