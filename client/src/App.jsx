@@ -1,6 +1,7 @@
 import Home from "./pages/Home"
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signin from "./pages/Signin"
+import Signup from "./pages/signup/Signup"
 function App() {
 
 
@@ -8,8 +9,16 @@ function App() {
     <>
       
    <div className="p-4 h-screen flex items-center justify-center">
-
-    <Home/>
+   <BrowserRouter>
+      <Routes>
+        
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          
+     
+      </Routes>
+    </BrowserRouter>
    </div>
 
     </>
