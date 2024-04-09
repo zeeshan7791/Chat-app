@@ -39,7 +39,7 @@ export const signUp = async (req, res) => {
 			await newUser.save();
 
 			return res.status(201).json({
-				sucess:true,
+				success:true,
 				message:"user register successfully",
 				_id: newUser._id,
 				fullName: newUser.fullName,
