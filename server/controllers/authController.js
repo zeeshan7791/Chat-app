@@ -57,22 +57,30 @@ export const signUp = async (req, res) => {
 
 export const login=async(req,res,next)=>{
     try{
-const {username,password}=req.body
-const user=await User.findOne({username})
+		const { username, password } = req.body;
+        const user = await User.findOne({ username });
 
-const passwordMatch=await bcryptjs.compare(password,user.password||"")
-if(!passwordMatch ||!user)
-{
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
 
-	return res.status(400).json({
-		success:false,
-		message:'invalid credentials'
-	})
-}
+        const passwordMatch = await bcryptjs.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid credentials',
+            });
+        }
 
 		generateTokenandSetCookie(user._id, res);
 
 		return res.status(200).json({
+			sucess:true,
+			message:"login Successfully",
 			_id: user._id,
 			fullName: user.fullName,
 			username: user.username,
@@ -86,7 +94,7 @@ if(!passwordMatch ||!user)
 export const logout=async(req,res,next)=>{
 	try {
 		res.cookie("chattoken", "", { maxAge: 0 });
-		return res.status(200).json({ message: "Logged out successfully" });
+		return res.status(200).json({success:true, message: "Logged out successfully" });
 	} catch (error) {
 		
 		return res.status(500).json({ error: "Internal Server Error" });
