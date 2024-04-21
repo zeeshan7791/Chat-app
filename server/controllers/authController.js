@@ -93,7 +93,10 @@ export const login=async(req,res,next)=>{
 }
 export const logout=async(req,res,next)=>{
 	try {
-		res.cookie("chattoken", "", { maxAge: 0 });
+		res.cookie("chatToken", null, {
+			expires: new Date(Date.now()),
+			httpOnly: true,
+		  });
 		return res.status(200).json({success:true, message: "Logged out successfully" });
 	} catch (error) {
 		
