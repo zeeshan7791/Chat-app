@@ -12,6 +12,7 @@ const useLogout = () => {
 		try {
 			const res = await fetch(`${serverLink}/auth/logout`, {
 				method: "GET",
+				credentials: "include",
 			
 			});
 			const data = await res.json();
