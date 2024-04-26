@@ -48,13 +48,22 @@ export const sendMessage = async (req, res) => {
 
 export const getMessages=async(req,res,next)=>{
 	const {id:userToChatId}=req.params
+	console.log(userToChatId,'userToChatId----------')
 	try{
 
 		const senderId=req.user._id
 		const conversation = await Conversation.findOne({
 			participants:{$all:[senderId,userToChatId]}
 	}).populate("messages")
+	if(conversation===null){
+		return res.status(200).json({
+			success:null,
+			message: "no chat exist",
+			
+		})
+	}
 	const {messages}=conversation
+
 	return res.status(200).json({
 		success:true,
 		message: "all chat fetched",
