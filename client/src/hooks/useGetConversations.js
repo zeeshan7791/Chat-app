@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { serverLink } from "../config/config";
 
+
 const useGetConversations = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
+
 
   useEffect(() => {
     const getConversations = async () => {
@@ -18,8 +20,9 @@ const useGetConversations = () => {
         if (data.success === false) {
           toast.error(data.message);
         }
-        console.log(data, "value in data");
+  
         setConversations(data.filteredUsers);
+
       } catch (error) {
         toast.error(error.message);
       } finally {
