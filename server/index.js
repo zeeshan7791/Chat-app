@@ -7,7 +7,8 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { connectDB } from "./config/db.js"
 import cors from "cors"
-const app=express()
+import { app, server } from "./socket/socket.js"
+
 dotenv.config()
 const PORT=process.env.PORT ||3000
 
@@ -30,7 +31,7 @@ app.get("/",(req,res)=>{
 })
 // app.use(cors)
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     connectDB()
     console.log(`server is running on ${PORT}`)
 })
