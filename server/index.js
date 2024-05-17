@@ -1,3 +1,4 @@
+import path from 'path'
 import express from "express"
 import dotenv from "dotenv"
 import authRoutes from "./routes/authRoute.js"
@@ -11,7 +12,7 @@ import { app, server } from "./socket/socket.js"
 
 dotenv.config()
 const PORT=process.env.PORT ||3000
-
+const __dirname=path.resolve()
 // app.use(cors())
 app.use(
     cors({
@@ -26,9 +27,11 @@ app.use(cookieParser());
 app.use("/api/auth",authRoutes)
 app.use("/api/messages",messagesRoute)
 app.use("/api/users",userRoute)
-app.get("/",(req,res)=>{
-    res.send('hey how are u')
+app.use(express.static(path.join(__dirname,"/client/dist")))
+app.get("*",(req,res)=>{
+res.sendFile(path.join(__dirname,"client","dist","index.html"))
 })
+
 // app.use(cors)
 
 server.listen(PORT,()=>{
