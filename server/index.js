@@ -16,7 +16,7 @@ const __dirname=path.resolve()
 // app.use(cors())
 app.use(
     cors({
-      origin: "https://chat-app-production-5bbn.onrender.com",
+      origin: "https://chat-app-7gm6.onrender.com",
       credentials: true, // Allow credentials (cookies)
     })
   );
