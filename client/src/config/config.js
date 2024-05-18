@@ -1,1 +1,1 @@
-export const serverLink="https://chat-app-yt.onrender.com/api"
+export const serverLink="http://localhost:8000/api"
